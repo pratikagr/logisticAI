@@ -1,25 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+// import { TrafficLayer } from "./components/Traffic"
+import {
+  useJsApiLoader,
+  GoogleMap,
+  Marker,
+  TrafficLayer,
+  InfoWindow,
+} from "@react-google-maps/api";
+
+const center = {
+  lat: 20.2960,
+  lng: 85.8245,
+};
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React with me
-        </a>
-      </header>
-    </div>
+  const { isLoaded } = useJsApiLoader({
+    id: "google-map-script",
+    googleMapsApiKey: "AIzaSyCER5etJ6Db1GCbArkle4Bect8oANQIuo8",
+  });
+  const [markerPosition, setMarkerPosition] = useState(center);
+
+  return isLoaded ? (
+    <>
+      <GoogleMap
+        center={center}
+        zoom={8}
+        mapContainerStyle={{ width: "100%", height: "100vh" }}
+        options={{
+          zoomControl: false,
+          streetViewControl: false,
+          mapTypeControl: false,
+          fullscreenControl: false,
+        }}
+      >
+        <TrafficLayer autoUpdate />
+        <Marker position={markerPosition} />
+      </GoogleMap>
+    </>
+  ) : (
+    <></>
   );
 }
-
 export default App;
