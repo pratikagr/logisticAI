@@ -1,44 +1,40 @@
-import { useState } from "react";
-// import { TrafficLayer } from "./components/Traffic"
-import {
-  useJsApiLoader,
-  GoogleMap,
-  Marker,
-  TrafficLayer,
-  InfoWindow,
-} from "@react-google-maps/api";
+import React, { useState } from 'react';
+import './App.css';
+import Map from './Map';
+// import Upload from './Upload';
 
-const center = {
-  lat: 20.2960,
-  lng: 85.8245,
+const App = () => {
+  const [activeTab, setActiveTab] = useState('visualise');
+
+  const handleTabClick = (tab) => {
+    setActiveTab(tab);
+  };
+
+  return (
+    <div className="container">
+      <header className="header">
+        <h1 className="header-title">BS-GeoEduNet 1.0</h1>
+        {/* <nav className="tabs">
+          <div
+            className={`tab ${activeTab === 'visualise' ? 'active' : ''}`}
+            onClick={() => handleTabClick('visualise')}
+          >
+            Visualise
+          </div>
+          <div
+            className={`tab ${activeTab === 'upload' ? 'active' : ''}`}
+            onClick={() => handleTabClick('upload')}
+          >
+            Upload
+          </div>
+        </nav> */}
+      </header>
+      <div className="content">
+        <Map isActive={true} /> 
+        {/* {activeTab === 'visualise' ? <Map isActive={true} /> : <Upload />} */}
+      </div>
+    </div>
+  );
 };
 
-function App() {
-  const { isLoaded } = useJsApiLoader({
-    id: "google-map-script",
-    googleMapsApiKey: "AIzaSyCER5etJ6Db1GCbArkle4Bect8oANQIuo8",
-  });
-  const [markerPosition, setMarkerPosition] = useState(center);
-
-  return isLoaded ? (
-    <>
-      <GoogleMap
-        center={center}
-        zoom={8}
-        mapContainerStyle={{ width: "100%", height: "100vh" }}
-        options={{
-          zoomControl: false,
-          streetViewControl: false,
-          mapTypeControl: false,
-          fullscreenControl: false,
-        }}
-      >
-        <TrafficLayer autoUpdate />
-        <Marker position={markerPosition} />
-      </GoogleMap>
-    </>
-  ) : (
-    <></>
-  );
-}
 export default App;
